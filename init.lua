@@ -2,7 +2,7 @@
 --- @type Mq
 local mq = require('mq')
 
-local version = '0.4.8'
+local version = '0.4.9'
 local me = mq.TLO.Me.Name()
 
 local settingPath = 'Consolidate/settings.lua'
@@ -193,6 +193,7 @@ local function defineMatches()
                             if myItem == otherItem then
                                 if not matches[myToon.name] then matches[myToon.name] = {} end
                                 if myProp.totalQty < otherProp.totalQty then
+                                    if not matches[otherToon.name] then matches[otherToon.name] = {} end
                                     if not matches[myToon.name][myItem] then
                                         matches[myToon.name][myItem] = {}
                                         matches[myToon.name][myItem].receiver = otherToon.name
@@ -210,6 +211,7 @@ local function defineMatches()
                                         if tiebreaker == 'Toonone' then
                                             tiebreaker = toons[1].name
                                         end
+                                        if not matches[tiebreaker] then matches[tiebreaker] = {} end
                                         matches[myToon.name][myItem].receiver = tiebreaker
                                         matches[myToon.name][myItem].receiverCount = 0
                                         print('\at[TsC]\ag [Tie] \ar'..myToon.name..'\'s \ag'..myProp.totalQty..' \ay'..myItem..' \aowill go to \ar'..tiebreaker..' \aobecause there was a tie.')

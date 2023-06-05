@@ -4,15 +4,28 @@ local mq = require('mq')
 local utils = require('utils')
 local ignorePath = 'Consolidate/ignore.lua'
 local givePath = 'Consolidate/tmp/give.lua'
+local artisanPath = 'Consolidate/artisan.lua'
+local settingPath = 'Consolidate/settings.lua'
 local me = mq.TLO.Me.Name()
 local pIgnorePath = 'Consolidate/ignore_'..me..'.lua'
 local give = {}
 local ignore = {}
 local items = {}
 items[me] = {}
+local artList = {}
+local isArtisan = false
+local settings = {}
 
 
 local function loadfiles()
+    local loadSets, setError = loadfile(mq.configDir..'/'..settingPath)
+    if setError then
+        settings.tiebreaker = 'Toonone'
+        settings.artisan = 'nobody'
+        mq.pickle(settingPath, settings)
+    elseif loadSets then
+        settings = loadSets()
+    end
     local mygive, giveerror = loadfile(mq.configDir..'/'..givePath)
     if giveerror then
         print('\at[TsC]\ao Error loading give.lua')
@@ -32,10 +45,32 @@ local function loadfiles()
     elseif pignoreList then
         ignore = pignoreList()
     end
+    if me == settings.artisan then
+        local loadArt, artError = loadfile(mq.configDir..'/'..artisanPath)
+        if artError then
+        elseif loadArt then
+            artList = loadArt()
+            isArtisan = true
+        end
+    end
 end
 loadfiles()
 
 print('\at[TsC]\ao Scanning items...')
+
+if isArtisan == true then --Combine ignore and artisan lists
+    local tempTable = {}
+    local n = 0
+    for _,v in pairs(ignore) do
+        n = n + 1
+        tempTable[n] = v
+    end
+    for _,v in pairs(artList) do
+        n = n + 1
+        tempTable[n] = v
+    end
+    ignore = tempTable
+end
 
 --Scan this toon's inventory
 local scope
