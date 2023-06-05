@@ -2,7 +2,7 @@
 --- @type Mq
 local mq = require('mq')
 
-local version = '0.4.9'
+local version = '0.5.0'
 local me = mq.TLO.Me.Name()
 
 local settingPath = 'Consolidate/settings.lua'
