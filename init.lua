@@ -2,7 +2,7 @@
 --- @type Mq
 local mq = require('mq')
 
-local version = '0.5.0'
+local version = '0.5.1'
 local me = mq.TLO.Me.Name()
 
 local settingPath = 'Consolidate/settings.lua'
@@ -89,6 +89,7 @@ print('\at[TsC]\ao Welcome to TS Consolidator v'..version)
 print('\at[TsC]\ao Make sure all your toons are in the same zone.')
 print('\at[TsC]\ao Make sure there is a banker nearby.')
 print('\at[TsC]\ao When you\'re ready, type \ay/tsc go')
+print('\at[TsC]\ao This version of Consolidate BETA will soon be replaced by v1.0.0')
 
 --------------------------------------------------------
 
